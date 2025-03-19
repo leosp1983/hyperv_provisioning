@@ -27,6 +27,6 @@ Provisionar máquinas virtuais no Hyper-V utilizando templates de sistemas opera
 - https://docs.ansible.com
 - https://write-verbose.com/2023/08/13/HyperVDiff/
 - https://github.com/tsailiming/ansible-hyperv/tree/master
-- https://medium.com/tech-jobs-academy/- how-to-use-differencing-disks-to-deploy-multiple-vms-quickly-in-hyper-v-1634f94c5541
+- https://medium.com/tech-jobs-academy/how-to-use-differencing-disks-to-deploy-multiple-vms-quickly-in-hyper-v-1634f94c5541
 - https://learn.microsoft.com/en-us/powershell/module/hyper-v/new-vhd?view=windowsserver2025-ps
 - https://learn.microsoft.com/en-us/powershell/module/hyper-v/new-vm?view=windowsserver2025-ps
