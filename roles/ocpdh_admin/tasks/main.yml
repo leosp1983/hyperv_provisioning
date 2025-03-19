@@ -1,0 +1,46 @@
+- name: Logando no openshift via ansible
+  community.okd.openshift_auth:
+    host: https://api.ocpdh.orizon.local:6443
+    username: "{{useropenshift}}"
+    password: "{{passopenshift}}"
+    validate_certs: false
+  register: openshift_auth_results
+
+- name: Logando no openshift via shell
+  ansible.builtin.shell: |
+    oc login --token={{openshift_auth_results.openshift_auth.api_key}} \
+    --server=https://api.ocpdh.orizon.local:6443 --insecure-skip-tls-verify=false || /bin/true
+
+- name: Coletando o nome do grupo
+  ansible.builtin.shell: |
+    oc describe rolebinding.rbac -n {{namespaceocp}} | grep -i Group | grep -v system | awk '{print $2}' 
+  register: grupo
+
+- name: Adicionando {{usuario}} no grupo {{grupo.stdout_lines[0]}}
+  community.windows.win_domain_group_membership:
+    name: "{{item}}"
+    members: "{{usuario}}"
+    state: present
+  with_items: 
+    - "{{grupo.stdout_lines[0]}}"
+    - GRP-OCPDH-ARGOCD-DEVS
+    - GRP-OCPDH-QUAY-ADMIN
+  vars:
+    ansible_connection: winrm
+    ansible_host: lincoln03.orizon.local
+    ansible_winrm_user: "{{userad}}"
+    ansible_winrm_password: "{{passad}}"
+    ansible_winrm_port: 5985
+    ansible_winrm_server_cert_validation: ignore
+
+- name: Fazendo logout do openshift via ansible
+  community.okd.openshift_auth:
+    host: https://api.ocpdh.orizon.local:6443
+    api_key: "{{openshift_auth_results.openshift_auth.api_key}}"
+    validate_certs: false
+    state: absent
+  when: openshift_auth_results.openshift_auth.api_key is defined
+  ignore_errors: true
+
+- name: Fazendo logout do openshift via shell
+  ansible.builtin.shell: oc logout || /bin/true

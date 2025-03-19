@@ -1,0 +1,4 @@
+- name: Criar diretório C:\meu_diretorio
+  ansible.windows.win_file:
+    path: G:\vms\home01
+    state: directory

@@ -1,0 +1,34 @@
+---
+- hosts: 192.168.0.45
+  gather_facts: yes
+  vars:
+    ansible_connection: winrm
+    ansible_winrm_user: administrador
+    ansible_winrm_password: "12345678"
+    ansible_winrm_transport: basic
+    ansible_winrm_server_cert_validation: ignore
+
+  tasks:
+
+    - include_role:
+        name: diretorio
+
+    # - include_role:
+    #     name: ocppr_edit
+    #   when: ambiente == 'producao' and permissao == 'EDIT'
+
+    # - include_role:
+    #     name: ocppr_admin
+    #   when: ambiente == 'producao' and permissao == 'ADMIN'
+
+    # - name: Pause para replicação dos domain controllers
+    #   ansible.builtin.pause:
+    #     minutes: 1
+
+    # - include_role:
+    #     name: ldap_sync_ocpdh
+    #   when: ambiente == 'corporativo'
+
+    # - include_role:
+    #     name: ldap_sync_ocppr
+    #   when: ambiente == 'producao'
