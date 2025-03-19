@@ -1,37 +1,34 @@
-- name: Criar diretório C:\meu_diretorio
+- name: Criando o diretório da VM
   ansible.windows.win_file:
     path: G:\vms\{{vmname}}
     state: directory
 
-- name: Obtain information about a file
+- name: Verificando se o template VHDX existe
   ansible.windows.win_stat:
     path: G:\vms\{{vmname}}\{{vmname}}.vhdx
   register: file_info
 
-- name: Clonando o template
+- name: Clonando o template VHDX
   ansible.windows.win_powershell:
     script: |
       New-VHD -ParentPath "G:\vms\template_linux\Virtual Hard Disks\template_linux.vhdx" `
       -Path G:\vms\{{vmname}}\{{vmname}}.vhdx -Differencing
   when: file_info.stat.exists == false
 
-- name: verificando se a vm existe
+- name: Verificando se a vm existe
   ansible.windows.win_powershell:
     script: |
       Get-VM -Name {{vmname}} -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Name
   register: vm_exist
 
-- debug:
-    var: vm_exist.output
-
-- name: criando a vm
+- name: Provisionando a VM
   ansible.windows.win_powershell:
     script: |
       New-VM -Name "{{vmname}}" -MemoryStartupBytes 4GB -BootDevice VHD -VHDPath G:\vms\{{vmname}}\{{vmname}}.vhdx `
       -Generation 2 -SwitchName "rede_home"
   when: vm_exist.output | length == 0 and file_info.stat.exists == true
 
-- name: Configurando vm 
+- name: Configurando a VM 
   ansible.windows.win_powershell:
     script: "{{item}}"
   loop:
