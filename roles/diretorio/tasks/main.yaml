@@ -1,19 +1,24 @@
 - name: Criar diretório C:\meu_diretorio
   ansible.windows.win_file:
-    path: G:\vms\home01
+    path: G:\vms\{{vmname}}
     state: directory
+
+- name: Clonando o template
+  ansible.windows.win_powershell:
+    script: Test-Path -Path G:\vms\{{vmname}}\{{vmname}}.vhdx
+  register: template_exist
 
 - name: Clonando o template
   ansible.windows.win_powershell:
     script: |
       New-VHD -ParentPath "G:\vms\template_linux\Virtual Hard Disks\template_linux.vhdx" `
-      -Path G:\vms\home01\home01.vhdx -Differencing
+      -Path G:\vms\{{vmname}}\{{vmname}}.vhdx -Differencing
   ignore_errors: true
 
 - name: criando a vm
   ansible.windows.win_powershell:
     script: |
-      New-VM -Name "home01" -MemoryStartupBytes 4GB -BootDevice VHD -VHDPath G:\vms\home01\home01.vhdx `
+      New-VM -Name "{{vmname}}" -MemoryStartupBytes 4GB -BootDevice VHD -VHDPath G:\vms\{{vmname}}\{{vmname}}.vhdx `
       -Generation 2 -SwitchName "rede_home"
   ignore_errors: true
 
@@ -21,10 +26,10 @@
   ansible.windows.win_powershell:
     script: "{{item}}"
   loop:
-    - Set-VMProcessor -VMName home01 -Count 4
-    - Set-VMFirmware -VMName home01 -EnableSecureBoot Off
-    - Set-VM -Name home01 -CheckpointType Standard
-    - Set-VM -Name home01 -AutomaticCheckpointsEnabled $false
-    - Set-VM -Name home01 -AutomaticStartAction Nothing
-    - Set-VM -Name home01 -AutomaticStopAction Shutdown 
+    - Set-VMProcessor -VMName {{vmname}} -Count 4
+    - Set-VMFirmware -VMName {{vmname}} -EnableSecureBoot Off
+    - Set-VM -Name {{vmname}} -CheckpointType Standard
+    - Set-VM -Name {{vmname}} -AutomaticCheckpointsEnabled $false
+    - Set-VM -Name {{vmname}} -AutomaticStartAction Nothing
+    - Set-VM -Name {{vmname}} -AutomaticStopAction Shutdown 
   ignore_errors: true
