@@ -8,11 +8,6 @@
     path: G:\vms\{{vmname}}\{{vmname}}.vhdx
   register: file_info
 
-- name: Verificando se o template existe
-  ansible.windows.win_powershell:
-    script: Test-Path -Path G:\vms\{{vmname}}\{{vmname}}.vhdx
-  register: template_exist
-
 - debug:
     var: file_info.stat.exists
 
@@ -21,7 +16,7 @@
     script: |
       New-VHD -ParentPath "G:\vms\template_linux\Virtual Hard Disks\template_linux.vhdx" `
       -Path G:\vms\{{vmname}}\{{vmname}}.vhdx -Differencing
-  changed_when: "template_exist.output != 'True'"
+  changed_when: file_info.stat.exists == False
 
 - name: verificando se a vm existe
   ansible.windows.win_powershell:
