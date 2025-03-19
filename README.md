@@ -4,7 +4,7 @@ Hyper-V provisioning
 **Objetivo**
 -------------
 
-Provisionar vms no Hyper V a partir de um template linux ou Windows.
+Provisionar máquinas virtuais no Hyper-V utilizando templates de sistemas operacionais Linux ou Windows.
 
 **Funções**
 -------------
@@ -21,7 +21,7 @@ Provisionar vms no Hyper V a partir de um template linux ou Windows.
 
 - [x] Configura a VM provisionada: Realiza configurações adicionais na VM, como alocação de recursos, adaptação de rede e personalizações necessárias para que a VM esteja pronta para uso.
 
-**Referencias**
+**Referências**
 -------------
 
 https://docs.ansible.com
