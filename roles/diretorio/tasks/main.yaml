@@ -4,7 +4,7 @@
     state: directory
 
 - name: Verificar se o arquivo existe
-  stat:
+  win_stat:
     path: "G:\vms\{{vmname}}\{{vmname}}.vhdx"
   register: resultado_arquivo
 
