@@ -41,4 +41,4 @@
     - Set-VM -Name {{vmname}} -AutomaticCheckpointsEnabled $false
     - Set-VM -Name {{vmname}} -AutomaticStartAction Nothing
     - Set-VM -Name {{vmname}} -AutomaticStopAction Shutdown
-  when: vm_exist.output | length == 0 and file_info.stat.exists == true
+  when: vm_exist.output | length > 0 and file_info.stat.exists == true
