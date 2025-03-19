@@ -14,7 +14,7 @@
   register: template_exist
 
 - debug:
-    var: template_exist.output
+    var: file_info.stat.exists
 
 - name: Clonando o template
   ansible.windows.win_powershell:
