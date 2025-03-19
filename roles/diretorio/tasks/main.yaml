@@ -8,6 +8,9 @@
     script: Test-Path -Path G:\vms\{{vmname}}\{{vmname}}.vhdx
   register: template_exist
 
+- debug:
+    var: template_exist.output
+
 - name: Clonando o template
   ansible.windows.win_powershell:
     script: |
