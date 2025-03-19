@@ -3,13 +3,10 @@
     path: G:\vms\{{vmname}}
     state: directory
 
-- name: Clonando o template
+- name: Verificando se o template existe
   ansible.windows.win_powershell:
     script: Test-Path -Path G:\vms\{{vmname}}\{{vmname}}.vhdx
   register: template_exist
-
-- debug:
-    var: template_exist.output
 
 - name: Clonando o template
   ansible.windows.win_powershell:
@@ -17,6 +14,12 @@
       New-VHD -ParentPath "G:\vms\template_linux\Virtual Hard Disks\template_linux.vhdx" `
       -Path G:\vms\{{vmname}}\{{vmname}}.vhdx -Differencing
   when: template_exist.output == False
+
+- name: verificando se a vm existe
+  ansible.windows.win_powershell:
+    script: |
+      Get-VM -Name {{vmname}} -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Name
+  register: vm_exist
 
 - name: criando a vm
   ansible.windows.win_powershell:
