@@ -16,7 +16,7 @@
     script: |
       New-VHD -ParentPath "G:\vms\template_linux\Virtual Hard Disks\template_linux.vhdx" `
       -Path G:\vms\{{vmname}}\{{vmname}}.vhdx -Differencing
-  ignore_errors: true
+  when: template_exist.output == False
 
 - name: criando a vm
   ansible.windows.win_powershell:
