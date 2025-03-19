@@ -29,7 +29,7 @@
     script: |
       New-VM -Name "{{vmname}}" -MemoryStartupBytes 4GB -BootDevice VHD -VHDPath G:\vms\{{vmname}}\{{vmname}}.vhdx `
       -Generation 2 -SwitchName "rede_home"
-  when: vm_exist.output not exists and file_info.stat.exists == true
+  when: vm_exist.output is not defined and file_info.stat.exists == true
 
 - name: Configurando vm 
   ansible.windows.win_powershell:
