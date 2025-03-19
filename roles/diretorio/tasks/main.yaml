@@ -16,7 +16,7 @@
     script: |
       New-VHD -ParentPath "G:\vms\template_linux\Virtual Hard Disks\template_linux.vhdx" `
       -Path G:\vms\{{vmname}}\{{vmname}}.vhdx -Differencing
-  changed_when: file_info.stat.exists == False
+  when: file_info.stat.exists == false
 
 - name: verificando se a vm existe
   ansible.windows.win_powershell:
