@@ -21,6 +21,9 @@
       Get-VM -Name {{vmname}} -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Name
   register: vm_exist
 
+- debug:
+    var: vm_exist.output
+
 - name: criando a vm
   ansible.windows.win_powershell:
     script: |
