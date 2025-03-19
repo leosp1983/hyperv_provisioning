@@ -3,14 +3,21 @@
     path: G:\vms\home01
     state: directory
 
-- name: Run basic PowerShell script
+- name: Clonando o template
   ansible.windows.win_powershell:
     script: |
       New-VHD -ParentPath "G:\vms\template_linux\Virtual Hard Disks\template_linux.vhdx" `
       -Path G:\vms\home01\home01.vhdx -Differencing
   ignore_errors: true
 
-- name: Config vm 
+- name: criando a vm
+  ansible.windows.win_powershell:
+    script: |
+      New-VM -Name "home01" -MemoryStartupBytes 4GB -BootDevice VHD -VHDPath G:\vms\home01\home01.vhdx `
+      -Generation 2 -SwitchName "rede_home"
+  ignore_errors: true
+
+- name: Configurando vm 
   ansible.windows.win_powershell:
     script: "{{item}}"
   loop:
