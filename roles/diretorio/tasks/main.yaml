@@ -9,3 +9,15 @@
       New-VHD -ParentPath "G:\vms\template_linux\Virtual Hard Disks\template_linux.vhdx" `
       -Path G:\vms\home01\home01.vhdx -Differencing
   ignore_errors: true
+
+- name: Config vm 
+  ansible.windows.win_powershell:
+    script: "{{item}}"
+  loop:
+    - Set-VMProcessor -VMName home01 -Count 4
+    - Set-VMFirmware -VMName home01 -EnableSecureBoot Off
+    - Set-VM -Name home01 -CheckpointType Standard
+    - Set-VM -Name home01 -AutomaticCheckpointsEnabled $false
+    - Set-VM -Name home01 -AutomaticStartAction Nothing
+    - Set-VM -Name home01 -AutomaticStopAction Shutdown 
+  ignore_errors: true
