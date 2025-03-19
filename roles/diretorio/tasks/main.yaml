@@ -37,5 +37,5 @@
     - Set-VM -Name {{vmname}} -CheckpointType Standard
     - Set-VM -Name {{vmname}} -AutomaticCheckpointsEnabled $false
     - Set-VM -Name {{vmname}} -AutomaticStartAction Nothing
-    - Set-VM -Name {{vmname}} -AutomaticStopAction Shutdown 
-  ignore_errors: true
+    - Set-VM -Name {{vmname}} -AutomaticStopAction Shutdown
+  when: vm_exist.output is not defined and template_exist.output == True
