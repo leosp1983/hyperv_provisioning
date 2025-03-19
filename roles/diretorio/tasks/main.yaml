@@ -2,3 +2,10 @@
   ansible.windows.win_file:
     path: G:\vms\home01
     state: directory
+
+- name: Run basic PowerShell script
+  ansible.windows.win_powershell:
+    script: |
+      New-VHD -ParentPath "G:\vms\template_linux\Virtual Hard Disks\template_linux.vhdx" `
+      -Path G:\vms\home01\home01.vhdx -Differencing
+  ignore_errors: true
