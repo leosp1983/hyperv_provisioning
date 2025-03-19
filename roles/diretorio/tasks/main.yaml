@@ -26,7 +26,7 @@
     script: |
       New-VM -Name "{{vmname}}" -MemoryStartupBytes 4GB -BootDevice VHD -VHDPath G:\vms\{{vmname}}\{{vmname}}.vhdx `
       -Generation 2 -SwitchName "rede_home"
-  when: vm_exist.output | length == 0 and file_info.stat.exists == true
+  when: vm_exist.output | length == 0
 
 - name: Configurando a VM 
   ansible.windows.win_powershell:
@@ -38,4 +38,3 @@
     - Set-VM -Name {{vmname}} -AutomaticCheckpointsEnabled $false
     - Set-VM -Name {{vmname}} -AutomaticStartAction Nothing
     - Set-VM -Name {{vmname}} -AutomaticStopAction Shutdown
-  when: vm_exist.output | length > 0 and file_info.stat.exists == true
