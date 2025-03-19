@@ -3,6 +3,11 @@
     path: G:\vms\{{vmname}}
     state: directory
 
+- name: Verificar se o arquivo existe
+  stat:
+    path: "G:\vms\{{vmname}}\{{vmname}}.vhdx"
+  register: resultado_arquivo
+
 - name: Verificando se o template existe
   ansible.windows.win_powershell:
     script: Test-Path -Path G:\vms\{{vmname}}\{{vmname}}.vhdx
