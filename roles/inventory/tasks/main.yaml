@@ -1,0 +1,3 @@
+- ansible.builtin.add_host:
+    name: "{{server_name}}"
+    groups: windows
