@@ -1,10 +1,18 @@
 ---
-- hosts: 192.168.0.45
+- hosts: localhost
+  gather_facts: no
+
+  tasks:
+
+    - include_role:
+        name: inventory
+
+- hosts: windows
   gather_facts: yes
   vars:
     ansible_connection: winrm
-    ansible_winrm_user: administrador
-    ansible_winrm_password: "12345678"
+    ansible_winrm_user: "{{user}}"
+    ansible_winrm_password: "{{pass}}"
     ansible_winrm_transport: basic
     ansible_winrm_server_cert_validation: ignore
 
