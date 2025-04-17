@@ -24,7 +24,7 @@
 - name: Provisionando a VM
   ansible.windows.win_powershell:
     script: |
-      New-VM -Name "{{vmname}}" -MemoryStartupBytes 4GB -BootDevice VHD -VHDPath G:\vms\{{vmname}}\{{vmname}}.vhdx `
+      New-VM -Name "{{vmname}}" -MemoryStartupBytes 2GB -BootDevice VHD -VHDPath G:\vms\{{vmname}}\{{vmname}}.vhdx `
       -Generation 2 -SwitchName "rede_home"
   when: vm_exist.output | length == 0
 
